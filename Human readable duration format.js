@@ -1,183 +1,258 @@
-function formatDuration(totalTime) {
+function formatDuration(timeInSeconds) {
    let seconds = 1;
    let minutes = seconds * 60;
    let hours = minutes * 60;
    let days = hours * 24;
    let years = days * 365;
    let result = "";
-   
-   let isSeconds = "";
-   let isMinutes = "";
-   let isHours = "";
-   let isDays = "";
-   let isYears = "";
-   
-   if (totalTime >= seconds - 1) {
-      if (totalTime >= minutes) {
-         if (totalTime >= hours) {
-            if (totalTime >= days) {
-               if (totalTime >= years) {
-                  let yearsRounded = Math.floor(totalTime / years);
-                  let daysRounded = Math.floor(totalTime / days - yearsRounded * (years / days));
-                  let hoursRounded = Math.floor(totalTime / hours - (yearsRounded * (years / hours) + daysRounded * (days / hours)));
-                  let minutesRounded = Math.floor(totalTime / minutes - (yearsRounded * (years / minutes) + daysRounded * (days / minutes) + hoursRounded * (hours / minutes)));
-                  let secondsRounded = totalTime - (yearsRounded * years + daysRounded * days + hoursRounded * hours + minutesRounded * minutes);
-                  let items = 5;
 
+   let onlySeconds = "";
+   let onlyMinutes = "";
+   let onlyHours = "";
+   let onlyDays = "";
+   let onlyYears = "";
+
+   if (timeInSeconds >= seconds - 1) {
+      if (timeInSeconds >= minutes) {
+         if (timeInSeconds >= hours) {
+            if (timeInSeconds >= days) {
+               if (timeInSeconds >= years) {
+                  let items = 5;
+                  let yearsRounded = Math.floor(timeInSeconds / years);
+                  let daysRounded = Math.floor(timeInSeconds / days - yearsRounded * (years / days));
+                  let hoursRounded = Math.floor(timeInSeconds / hours - (yearsRounded * (years / hours) + daysRounded * (days / hours)));
+                  let minutesRounded = Math.floor(timeInSeconds / minutes - (yearsRounded * (years / minutes) + daysRounded * (days / minutes) + hoursRounded * (hours / minutes)));
+                  let secondsRounded = timeInSeconds - (yearsRounded * years + daysRounded * days + hoursRounded * hours + minutesRounded * minutes);
+                  if (yearsRounded > 1) {
+                     onlyYears = "years";
+                  }
+                  else {
+                     onlyYears = "year";
+                  }
+                  if (daysRounded > 1) {
+                     onlyDays = "days";
+                  }
+                  else if (daysRounded == 1) {
+                     onlyDays = "day";
+                  }
+                  else {
+                     onlyDays = "";
+                     items--;
+                  }
+                  if (hoursRounded > 1) {
+                     onlyHours = "hours";
+                  }
+                  else if (hoursRounded == 1) {
+                     onlyHours = "hour";
+                  }
+                  else {
+                     onlyHours = "";
+                     items--;
+                  }
+                  if (minutesRounded > 1) {
+                     onlyMinutes = "minutes";
+                  }
+                  else if (minutesRounded == 1) {
+                     onlyMinutes = "minute";
+                  }
+                  else {
+                     onlyMinutes = "";
+                     items--;
+                  }
+                  if (secondsRounded > 1) {
+                     onlySeconds = "seconds";
+                  }
+                  else if (secondsRounded == 1) {
+                     onlySeconds = "second";
+                  }
+                  else {
+                     onlySeconds = "";
+                     items--;
+                  }
+                  if (items == 5) {
+                     result = `${yearsRounded} ${onlyYears}, ${daysRounded} ${onlyDays}, ${hoursRounded} ${onlyHours}, ${minutesRounded} ${onlyMinutes} and ${secondsRounded} ${onlySeconds}`;
+                  }
+                  else if (items == 4) {
+                     if (onlySeconds == "") { result = `${yearsRounded} ${onlyYears}, ${daysRounded} ${onlyDays}, ${hoursRounded} ${onlyHours} and ${minutesRounded} ${onlyMinutes}`; }
+                     if (onlyMinutes == "") { result = `${yearsRounded} ${onlyYears}, ${daysRounded} ${onlyDays}, ${hoursRounded} ${onlyHours} and ${secondsRounded} ${onlySeconds}`; }
+                     if (onlyHours == "") { result = `${yearsRounded} ${onlyYears}, ${daysRounded} ${onlyDays}, ${minutesRounded} ${onlyMinutes} and ${secondsRounded} ${onlySeconds}`; }
+                     if (onlyDays == "") { result = `${yearsRounded} ${onlyYears}, ${hoursRounded} ${onlyHours}, ${minutesRounded} ${onlyMinutes} and ${secondsRounded} ${onlySeconds}`; }
+                  }
+                  else if (items == 3) {
+                     if (onlySeconds == "" && onlyMinutes == "") { result = `${yearsRounded} ${onlyYears}, ${daysRounded} ${onlyDays} and ${hoursRounded} ${onlyHours}`; }
+                     if (onlySeconds == "" && onlyHours == "") { result = `${yearsRounded} ${onlyYears}, ${daysRounded} ${onlyDays} and ${minutesRounded} ${onlyMinutes}`; }
+                     if (onlySeconds == "" && onlyDays == "") { result = `${yearsRounded} ${onlyYears}, ${hoursRounded} ${onlyHours} and ${minutesRounded} ${onlyMinutes}`; }
+                     if (onlyMinutes == "" && onlyHours == "") { result = `${yearsRounded} ${onlyYears}, ${daysRounded} ${onlyDays} and ${secondsRounded} ${onlySeconds}`; }
+                     if (onlyMinutes == "" && onlyDays == "") { result = `${yearsRounded} ${onlyYears}, ${hoursRounded} ${onlyHours} and ${secondsRounded} ${onlySeconds}`; }
+                     if (onlyHours == "" && onlyDays == "") { result = `${yearsRounded} ${onlyYears}, ${minutesRounded} ${onlyMinutes} and ${secondsRounded} ${onlySeconds}`; }
+                  }
+                  else if (items == 2) {
+                     if (onlySeconds == "" && onlyMinutes == "" && onlyHours == "") { result = `${yearsRounded} ${onlyYears} and ${daysRounded} ${onlyDays}`; }
+                     if (onlySeconds == "" && onlyHours == "" && onlyDays == "") { result = `${yearsRounded} ${onlyYears} and ${minutesRounded} ${onlyMinutes}`; }
+                     if (onlySeconds == "" && onlyMinutes == "" && onlyDays == "") { result = `${yearsRounded} ${onlyYears} and ${hoursRounded} ${onlyHours}`; }
+                     if (onlyMinutes == "" && onlyHours == "" && onlyDays == "") { result = `${yearsRounded} ${onlyYears} and ${secondsRounded} ${onlySeconds}`; }
+                  }
+                  else if (items == 1) {
+                     result = `${yearsRounded} ${onlyYears}`;
+                  }
                   // console.log(totalTime);
                   // console.log(result);
+                  return result;
                }
-               let daysRounded = Math.floor(totalTime / days);
-               let hoursRounded = Math.floor(totalTime / hours - daysRounded * (days / hours));
-               let minutesRounded = Math.floor(totalTime / minutes - (daysRounded * (days / minutes) + hoursRounded * (hours / minutes)));
-               let secondsRounded = totalTime - (daysRounded * days + hoursRounded * hours + minutesRounded * minutes);
+
                let items = 4;
+               let daysRounded = Math.floor(timeInSeconds / days);
+               let hoursRounded = Math.floor(timeInSeconds / hours - daysRounded * (days / hours));
+               let minutesRounded = Math.floor(timeInSeconds / minutes - (daysRounded * (days / minutes) + hoursRounded * (hours / minutes)));
+               let secondsRounded = timeInSeconds - (daysRounded * days + hoursRounded * hours + minutesRounded * minutes);
                if (daysRounded > 1) {
-                  isDays = "days";
+                  onlyDays = "days";
                }
                else {
-                  isDays = "day";
+                  onlyDays = "day";
                }
                if (hoursRounded > 1) {
-                  isHours = "hours";
+                  onlyHours = "hours";
                }
                else if (hoursRounded == 1) {
-                  isHours = "hour";
+                  onlyHours = "hour";
                }
                else {
-                  isHours = "";
+                  onlyHours = "";
                   items--;
                }
                if (minutesRounded > 1) {
-                  isMinutes = "minutes";
+                  onlyMinutes = "minutes";
                }
                else if (minutesRounded == 1) {
-                  isMinutes = "minute";
+                  onlyMinutes = "minute";
                }
                else {
-                  isMinutes = "";
+                  onlyMinutes = "";
                   items--;
                }
                if (secondsRounded > 1) {
-                  isSeconds = "seconds";
+                  onlySeconds = "seconds";
                }
                else if (secondsRounded == 1) {
-                  isSeconds = "second";
+                  onlySeconds = "second";
                }
                else {
-                  isSeconds = "";
+                  onlySeconds = "";
                   items--;
                }
                if (items == 4) {
-                  result = `${daysRounded} ${isDays}, ${hoursRounded} ${isHours}, ${minutesRounded} ${isMinutes} and ${secondsRounded} ${isSeconds}`;
+                  result = `${daysRounded} ${onlyDays}, ${hoursRounded} ${onlyHours}, ${minutesRounded} ${onlyMinutes} and ${secondsRounded} ${onlySeconds}`;
                }
                else if (items == 3) {
-                  if (isSeconds == "") { result = `${daysRounded} ${isDays}, ${hoursRounded} ${isHours} and ${minutesRounded} ${isMinutes}`; }
-                  if (isMinutes == "") { result = `${daysRounded} ${isDays}, ${hoursRounded} ${isHours} and ${secondsRounded} ${isSeconds}`; }
-                  if (isHours == "") { result = `${daysRounded} ${isDays}, ${minutesRounded} ${isMinutes} and ${secondsRounded} ${isSeconds}`; }
+                  if (onlySeconds == "") { result = `${daysRounded} ${onlyDays}, ${hoursRounded} ${onlyHours} and ${minutesRounded} ${onlyMinutes}`; }
+                  if (onlyMinutes == "") { result = `${daysRounded} ${onlyDays}, ${hoursRounded} ${onlyHours} and ${secondsRounded} ${onlySeconds}`; }
+                  if (onlyHours == "") { result = `${daysRounded} ${onlyDays}, ${minutesRounded} ${onlyMinutes} and ${secondsRounded} ${onlySeconds}`; }
                }
                else if (items == 2) {
-                  if (isSeconds == "" && isMinutes == "") { result = `${daysRounded} ${isDays} and ${hoursRounded} ${isHours}`; }
-                  if (isSeconds == "" && isHours == "") { result = `${daysRounded} ${isDays} and ${minutesRounded} ${isMinutes}`; }
-                  if (isMinutes == "" && isHours == "") { result = `${daysRounded} ${isDays} and ${secondsRounded} ${isSeconds}`; }
+                  if (onlySeconds == "" && onlyMinutes == "") { result = `${daysRounded} ${onlyDays} and ${hoursRounded} ${onlyHours}`; }
+                  if (onlySeconds == "" && onlyHours == "") { result = `${daysRounded} ${onlyDays} and ${minutesRounded} ${onlyMinutes}`; }
+                  if (onlyMinutes == "" && onlyHours == "") { result = `${daysRounded} ${onlyDays} and ${secondsRounded} ${onlySeconds}`; }
                }
                else if (items == 1) {
-                  result = `${daysRounded} ${isDays}`;
+                  result = `${daysRounded} ${onlyDays}`;
                }
                return result;
             }
-            let hoursRounded = Math.floor(totalTime / hours);
-            let minutesRounded = Math.floor(totalTime / minutes - hoursRounded * minutes);
-            let secondsRounded = totalTime - (hoursRounded * hours + minutesRounded * minutes);
+
             let items = 3;
+            let hoursRounded = Math.floor(timeInSeconds / hours);
+            let minutesRounded = Math.floor(timeInSeconds / minutes - hoursRounded * minutes);
+            let secondsRounded = timeInSeconds - (hoursRounded * hours + minutesRounded * minutes);
             if (hoursRounded > 1) {
-               isHours = "hours";
+               onlyHours = "hours";
             }
             else {
-               isHours = "hour";
+               onlyHours = "hour";
             }
             if (minutesRounded > 1) {
-               isMinutes = "minutes";
+               onlyMinutes = "minutes";
             }
             else if (minutesRounded == 1) {
-               isMinutes = "minute";
+               onlyMinutes = "minute";
             }
             else {
-               isMinutes = "";
+               onlyMinutes = "";
                items--;
             }
             if (secondsRounded > 1) {
-               isSeconds = "seconds";
+               onlySeconds = "seconds";
             }
             else if (secondsRounded == 1) {
-               isSeconds = "second";
+               onlySeconds = "second";
             }
             else {
-               isSeconds = "";
+               onlySeconds = "";
                items--;
             }
             if (items == 3) {
-               result = `${hoursRounded} ${isHours}, ${minutesRounded} ${isMinutes} and ${secondsRounded} ${isSeconds}`;
+               result = `${hoursRounded} ${onlyHours}, ${minutesRounded} ${onlyMinutes} and ${secondsRounded} ${onlySeconds}`;
             }
             else if (items == 2) {
-               if (isSeconds == "") { result = `${hoursRounded} ${isHours} and ${minutesRounded} ${isMinutes}`; }
-               if (isMinutes == "") { result = `${hoursRounded} ${isHours} and ${secondsRounded} ${isSeconds}`; }
+               if (onlySeconds == "") { result = `${hoursRounded} ${onlyHours} and ${minutesRounded} ${onlyMinutes}`; }
+               if (onlyMinutes == "") { result = `${hoursRounded} ${onlyHours} and ${secondsRounded} ${onlySeconds}`; }
             }
             else if (items == 1) {
-               result = `${hoursRounded} ${isHours}`;
+               result = `${hoursRounded} ${onlyHours}`;
             }
             return result;
          }
-         let minutesRounded = Math.floor(totalTime / minutes);
-         let secondsRounded = totalTime - minutesRounded * minutes;
+
          let items = 2;
+         let minutesRounded = Math.floor(timeInSeconds / minutes);
+         let secondsRounded = timeInSeconds - minutesRounded * minutes;
          if (minutesRounded > 1) {
-            isMinutes = "minutes";
+            onlyMinutes = "minutes";
          }
          else {
-            isMinutes = "minute";
+            onlyMinutes = "minute";
          }
          if (secondsRounded > 1) {
-            isSeconds = "seconds";
+            onlySeconds = "seconds";
          }
          else if (secondsRounded == 1) {
-            isSeconds = "second";
+            onlySeconds = "second";
          }
          else {
-            isSeconds = "";
+            onlySeconds = "";
             items--;
          }
          if (items == 2) {
-            result = `${minutesRounded} ${isMinutes} and ${secondsRounded} ${isSeconds}`;
+            result = `${minutesRounded} ${onlyMinutes} and ${secondsRounded} ${onlySeconds}`;
          }
          else if (items == 1) {
-            result = `${minutesRounded} ${isMinutes}`;
+            result = `${minutesRounded} ${onlyMinutes}`;
          }
          return result;
       }
-      let secondsRounded = totalTime;
+
       let items = 1;
+      let secondsRounded = timeInSeconds;
       if (secondsRounded > 1) {
-         isSeconds = `seconds`;
+         onlySeconds = `seconds`;
       }
       else if (secondsRounded == 1) {
-         isSeconds = "second";
+         onlySeconds = "second";
       }
       else {
-         isSeconds = "";
+         onlySeconds = "";
          items--;
       }
       if (items == 1) {
-         result = `${secondsRounded} ${isSeconds}`;
+         result = `${secondsRounded} ${onlySeconds}`;
       }
       else if (items == 0) {
          result = `now`;
       }
-
+      return result;
    }
-   return result;
 }
 
 // formatDuration(157680000 + 24 * 3600 * 15 + 3600 * 7 + 60 * 25 + 17);
 // console.log(formatDuration(232134));
-console.log(formatDuration(15731042));
+console.log(formatDuration(205851834));
